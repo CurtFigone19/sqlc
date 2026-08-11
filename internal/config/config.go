@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -9,8 +8,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-
-	"github.com/kyleconroy/sqlc/internal/sdk"
 )
 
 type Config struct {
@@ -116,15 +113,12 @@ func sortFiles(files []string) {
 				if valI != valJ {
 					return valI < valJ
 				}
-				// If numeric values are equal (e.g. 01_init.sql and 1_init.sql),
-				// fallback to lexicographical sort of the whole filename to be consistent.
 				return fileI < fileJ
 			}
 		}
 
-		// Fallback to lexicographical sorting if one or both do not have numeric prefixes
 		if len(matchI) > 0 && len(matchJ) == 0 {
-			return true // numeric prefixes come first
+			return true
 		}
 		if len(matchI) == 0 && len(matchJ) > 0 {
 			return false
